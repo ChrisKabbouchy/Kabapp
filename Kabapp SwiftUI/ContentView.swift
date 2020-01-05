@@ -5,13 +5,13 @@
 //  Created by Christian Kabouchy on 12/29/19.
 //  Copyright © 2019 Christian Kabouchy. All rights reserved.
 //
-
+import Foundation
 import SwiftUI
+import Combine
 
 struct ContentView: View {
     var body: some View {
         VStack{
-            
             topView()
             Spacer()
             imageView()
@@ -29,17 +29,21 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct topView: View {
+    @ObservedObject var resaurantManager = RestaurantManager()
     var body: some View {
         HStack{
-            Button(action: {print("hello")}) {
-                Image(systemName: "person.fill")
+            Button(action: {
+                print("hello")
+                
+            }) {
+                Image(systemName: "square.and.pencil")
                     .resizable()
                     .frame(width: 45, height: 45)
                     .foregroundColor(.gray)
                     .aspectRatio(contentMode: .fit)
             }
             Spacer()
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+            Button(action: {self.resaurantManager.fetchData()}) {
                 Image(systemName: "flame.fill")
                     .resizable()
                     .frame(width: 50, height: 50)
@@ -102,11 +106,24 @@ struct bottomView: View {
 }
 
 struct imageView: View {
+    @ObservedObject var manager = RestaurantManager()
+    //@ObservedObject var manager : RestaurantManager
+    init() {
+        manager.fetchData()
+    }
     var body: some View {
-        Image("image")
+        if let image = manager.imageData {
+            return Image(uiImage: image)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .cornerRadius(30)
             .padding(.horizontal)
+        }else{
+            return Image("image")
+                .resizable()
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(30)
+            .padding(.horizontal)
+        }
     }
 }
