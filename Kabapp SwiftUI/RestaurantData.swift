@@ -14,7 +14,8 @@ struct RestaurantData : Decodable{
     var nearby_restaurants : [Restaurant]
 }
 
-struct Restaurant : Decodable{
+struct Restaurant : Decodable,Identifiable{
+    let id = UUID()
     var restaurant : RestaurantDetails
 }
 

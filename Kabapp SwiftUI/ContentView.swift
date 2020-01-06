@@ -10,12 +10,17 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
+    @ObservedObject var restaurantManager = RestaurantManager()
+    init() {
+        restaurantManager.fetchData()
+    }
     var body: some View {
         VStack{
-            topView()
+            topView(manager: restaurantManager)
             Spacer()
-            imageView()
-            Spacer()
+            List(restaurantManager.restaurants){ restaurant in
+                imageView(manager: self.restaurantManager)
+            }
             bottomView()
             
         }
@@ -29,7 +34,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct topView: View {
-    @ObservedObject var resaurantManager = RestaurantManager()
+    @ObservedObject var manager : RestaurantManager
     var body: some View {
         HStack{
             Button(action: {
@@ -43,7 +48,7 @@ struct topView: View {
                     .aspectRatio(contentMode: .fit)
             }
             Spacer()
-            Button(action: {self.resaurantManager.fetchData()}) {
+            Button(action: {self.manager.fetchData()}) {
                 Image(systemName: "flame.fill")
                     .resizable()
                     .frame(width: 50, height: 50)
@@ -106,24 +111,24 @@ struct bottomView: View {
 }
 
 struct imageView: View {
-    @ObservedObject var manager = RestaurantManager()
-    //@ObservedObject var manager : RestaurantManager
-    init() {
-        manager.fetchData()
+    //    @ObservedObject var manager = RestaurantManager()
+    @ObservedObject var manager : RestaurantManager
+    init(manager restaurantManager : RestaurantManager) {
+        manager = restaurantManager
     }
     var body: some View {
         if let image = manager.imageData {
             return Image(uiImage: image)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .cornerRadius(30)
-            .padding(.horizontal)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .cornerRadius(30)
+                .padding(.horizontal)
         }else{
             return Image("image")
                 .resizable()
-            .aspectRatio(contentMode: .fit)
-            .cornerRadius(30)
-            .padding(.horizontal)
+                .aspectRatio(contentMode: .fill)
+                .cornerRadius(30)
+                .padding(.horizontal)
         }
     }
 }

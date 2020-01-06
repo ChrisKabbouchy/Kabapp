@@ -14,7 +14,11 @@ class RestaurantManager: ObservableObject {
     
     
     @Published var imageData : UIImage?
+    @Published var restaurants : [Restaurant] = [
+        Restaurant(restaurant: RestaurantDetails(id: "", name: "", url: "", thumb: ""))
+    ]
     
+
     
     func fetchData() {
         
@@ -46,6 +50,7 @@ class RestaurantManager: ObservableObject {
                         //self.delegate?.restaurantDidUpdate(imageData : safeImageData)
                         DispatchQueue.main.async {
                             self.imageData = UIImage(data: safeImageData)
+                            self.restaurants = decodedData.nearby_restaurants
                         }
                         
                     }
