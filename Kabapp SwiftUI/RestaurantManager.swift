@@ -15,7 +15,7 @@ class RestaurantManager: ObservableObject {
     
     @Published var imageData : UIImage?
     @Published var restaurants : [Restaurant] = [
-        Restaurant(restaurant: RestaurantDetails(id: "", name: "", url: "", thumb: ""))
+        Restaurant(restaurant: RestaurantDetails(id: "", name: "restaurant", url: "", thumb: ""))
     ]
     
 

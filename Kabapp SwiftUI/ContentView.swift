@@ -19,8 +19,14 @@ struct ContentView: View {
             topView(manager: restaurantManager)
             Spacer()
             List(restaurantManager.restaurants){ restaurant in
-                imageView(manager: self.restaurantManager)
-            }
+                ZStack(alignment: .bottomLeading){
+                    imageView(manager: restaurant)
+                    labelView(manager: restaurant)
+                    
+                }
+                
+                }.frame(alignment: .center)
+            Spacer()
             bottomView()
             
         }
@@ -111,24 +117,55 @@ struct bottomView: View {
 }
 
 struct imageView: View {
-    //    @ObservedObject var manager = RestaurantManager()
-    @ObservedObject var manager : RestaurantManager
-    init(manager restaurantManager : RestaurantManager) {
-        manager = restaurantManager
+    @ObservedObject var manager = RestaurantManager()
+    var currentRestaurant : Restaurant
+    init(manager restaurantManager : Restaurant) {
+        currentRestaurant = restaurantManager
     }
     var body: some View {
-        if let image = manager.imageData {
-            return Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .cornerRadius(30)
-                .padding(.horizontal)
+        let imageString = currentRestaurant.restaurant.thumb
+        if let imageUrl = URL(string: imageString){
+            let imageDataa = try? Data(contentsOf: imageUrl)
+            if let safeImageData = imageDataa {
+                let imageData = UIImage(data: safeImageData)
+                return Image(uiImage: imageData!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 320, height: 450, alignment: .center)
+                    //.padding(.all)
+                    .edgesIgnoringSafeArea(.all)
+            }else{
+                return Image("image")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 320, height: 450, alignment: .center)
+                    //.padding(.all)
+                    .edgesIgnoringSafeArea(.all)
+            }
+            
         }else{
             return Image("image")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .cornerRadius(30)
-                .padding(.horizontal)
+                .frame(width: 320, height: 450, alignment: .center)
+                //.padding(.all)
+                .edgesIgnoringSafeArea(.all)
+        }
+    }
+}
+
+struct labelView: View {
+    @ObservedObject var manager = RestaurantManager()
+    var currentRestaurant : Restaurant
+    init(manager restaurantManager : Restaurant) {
+        currentRestaurant = restaurantManager
+    }
+    var body: some View {
+        VStack {
+            Text(currentRestaurant.restaurant.name)
+                .padding()
+                .font(.title)
+                .foregroundColor(.white)
         }
     }
 }
