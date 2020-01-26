@@ -11,8 +11,10 @@ import Combine
 
 struct ContentView: View {
     @EnvironmentObject var restaurantManager : RestaurantManager
-    var body: some View { 
-        VStack{
+    @State private var offset: CGSize = .zero
+    var body: some View {
+        
+       return VStack{
             topView()
             Spacer()
             GeometryReader{ geo in
@@ -22,51 +24,30 @@ struct ContentView: View {
                                 imageView(manager: restaurant)
                                 labelView(manager: restaurant)
                                 
-                            }.gesture(DragGesture()
-                                    .onChanged({ (value) in
-                                        if value.translation.width > 0{
-                                            self.restaurantManager.updateUI(id: restaurant.id, swipeValue: value.translation.width, degreeValue: 8)
-//                                            restaurant.swipe =
-//                                            restaurant.degree = 8
-                                        }
-                                        else{
-                                            self.restaurantManager.updateUI(id: restaurant.id, swipeValue:  value.translation.width, degreeValue: -8)
-//                                            restaurant.swipe  = value.translation.width
-//                                            restaurant.degree = -8
-                                        }
-                                        
-                                    }).onEnded({ (value) in
-                                        if restaurant.swipe > 0{
-                                            if restaurant.swipe  > geo.size.width / 2 {
-                                                self.restaurantManager.updateUI(id: restaurant.id, swipeValue: 500, degreeValue: 0)
-//                                                restaurant.swipe  = 500
-//                                                restaurant.degree = 0
-                                            }
-                                            else{
-                                                self.restaurantManager.updateUI(id: restaurant.id, swipeValue: 0, degreeValue: 0)
-//                                                restaurant.swipe  = 0
-//                                                restaurant.degree = 0
-                                            }
-                                        }
-                                        else{
-                                            if -restaurant.swipe > geo.size.width / 2 {
-                                                self.restaurantManager.updateUI(id: restaurant.id, swipeValue: -500, degreeValue: 0)
-//                                                restaurant.swipe  = -500
-//                                                restaurant.degree = 0
-                                            }
-                                            else{
-                                                self.restaurantManager.updateUI(id: restaurant.id, swipeValue: 0, degreeValue: 0)
-//                                                restaurant.swipe  = 0
-//                                                restaurant.degree = 0
-                                            }
-                                        }
-                                    })).offset(x: restaurant.swipe )
-                                    .rotationEffect(.init(degrees: restaurant.degree))
-                                .animation(.interactiveSpring())
-                                
+                            }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
+                            .gesture(DragGesture()
+                                .onChanged {value in self.offset = value.translation
+                                    //self.restaurantManager.restaurants[restaurant.id].offset = value.translation
                             }
+                                .onEnded { value in
+                                    if value.translation.width < -100 {
+                                        //self.offset = .init(width: -1000, height: 0)
+                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
+                                        //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
+                                    } else if value.translation.width > 100 {
+                                        //self.offset = .init(width: 1000, height: 0)
+                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
+                                        //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
+                                    } else {
+                                        //self.offset = .zero
+                                        self.restaurantManager.restaurants[restaurant.id].offset = .zero
+                                        //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .zero)
+                                    }
+                            })
+                            .animation(.spring())
                 }
             }
+        }
             Spacer()
             bottomView()
             
