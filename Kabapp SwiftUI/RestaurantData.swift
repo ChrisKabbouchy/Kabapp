@@ -9,7 +9,11 @@
 
 import Foundation
 
-
+//struct RestaurantEndData {
+//    var restDaata : [Restaurant]
+//    var degree : Double = 0
+//    var swipe : Float = 0
+//}
 struct RestaurantData : Decodable{
     var nearby_restaurants : [Restaurant]
 }
@@ -17,6 +21,7 @@ struct RestaurantData : Decodable{
 struct Restaurant : Decodable,Identifiable{
     let id = UUID()
     var restaurant : RestaurantDetails
+    
 }
 
 struct RestaurantDetails : Decodable {

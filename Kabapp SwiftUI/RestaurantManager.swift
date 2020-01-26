@@ -14,16 +14,24 @@ class RestaurantManager: ObservableObject {
     
     
     @Published var imageData : UIImage?
-    @Published var restaurants : [Restaurant] = [
-        Restaurant(restaurant: RestaurantDetails(id: "", name: "restaurant", url: "", thumb: ""))
-    ]
-    
+    @Published var restaurants = [Resto()]
 
-    
+//    @Published var degree : Double = 0
+//    @Published var swipe : CGFloat = 0
+
+    func updateUI(id : UUID , swipeValue : CGFloat , degreeValue : Double)  {
+        for i in 0..<restaurants.count {
+            if restaurants[i].id == id{
+                restaurants[i].swipe = swipeValue
+                restaurants[i].degree = degreeValue
+            }
+        }
+    }
     func fetchData() {
         
         let baseUrl = "https://developers.zomato.com/api/v2.1/geocode?lat=33.8333&lon=35.8333"
         let apiKey = "79010e4bdff8688f68fbeb86ee8c6345"
+        
         
         let url = URL(string: baseUrl)
         
@@ -50,7 +58,17 @@ class RestaurantManager: ObservableObject {
                         //self.delegate?.restaurantDidUpdate(imageData : safeImageData)
                         DispatchQueue.main.async {
                             self.imageData = UIImage(data: safeImageData)
-                            self.restaurants = decodedData.nearby_restaurants
+                            for i in 0..<decodedData.nearby_restaurants.count{
+                                var newRest = Resto()
+                                newRest.restaurant = decodedData.nearby_restaurants[i].restaurant
+                                if i == 0 {
+                                    self.restaurants[i] = newRest
+                                }else{
+                                    self.restaurants.append(newRest)
+                                }
+                                //self.restaurants[i].restaurant = decodedData.nearby_restaurants[i].restaurant
+                            }
+                            //self.endRestaurant.restDaata = decodedData.nearby_restaurants
                         }
                         
                     }
