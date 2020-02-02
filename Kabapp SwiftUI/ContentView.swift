@@ -10,34 +10,44 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
-    @EnvironmentObject var restaurantManager : RestaurantManager
+    @ObservedObject var restaurantManager = RestaurantManager()
+    init() {
+        restaurantManager.fetchData()
+    }
     @State private var offset: CGSize = .zero
+    @State private var currentRest : Int = 8
     var body: some View {
-        
-       return VStack{
-            topView()
+        //currentRest = restaurantManager.restaurants.last?.id ?? 6
+     return VStack{
+            topView(manager: restaurantManager)
             Spacer()
             GeometryReader{ geo in
                     ZStack{
                         ForEach(self.restaurantManager.restaurants){ restaurant in
+                            
+                            if (self.restaurantManager.restaurants.count-1 )...self.restaurantManager.restaurants.count ~= restaurant.id {
                             ZStack(alignment: .bottomLeading){
-                                imageView(manager: restaurant)
-                                labelView(manager: restaurant)
-                                
+                                imageView(manager: self.restaurantManager, currentRest: restaurant)
+                                labelView(manager: self.restaurantManager, currentRest: restaurant)
                             }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
+                                //.rotationEffect(.degrees(Double(offset.width/geo.size.width)*25),anchor: .bottom)
                             .gesture(DragGesture()
-                                .onChanged {value in self.offset = value.translation
+                                .onChanged ({value in
+                                    self.offset = value.translation
                                     //self.restaurantManager.restaurants[restaurant.id].offset = value.translation
-                            }
+                                    
+                            })
                                 .onEnded { value in
                                     if value.translation.width < -100 {
-                                        //self.offset = .init(width: -1000, height: 0)
-                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
-                                        //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
+                                        self.offset = .init(width: -1000, height: 0)
+                                        //self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
+                                        self.restaurantManager.restaurants.remove(at: restaurant.id)
+                                       // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
                                     } else if value.translation.width > 100 {
-                                        //self.offset = .init(width: 1000, height: 0)
-                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
-                                        //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
+                                        self.offset = .init(width: 1000, height: 0)
+                                        //self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
+                                        self.restaurantManager.restaurants.remove(at: restaurant.id)
+                                       // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
                                     } else {
                                         //self.offset = .zero
                                         self.restaurantManager.restaurants[restaurant.id].offset = .zero
@@ -45,7 +55,7 @@ struct ContentView: View {
                                     }
                             })
                             .animation(.spring())
-                }
+                            }}
             }
         }
             Spacer()
@@ -62,7 +72,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct topView: View {
-    @EnvironmentObject var manager : RestaurantManager
+    @ObservedObject var manager : RestaurantManager
     var body: some View {
         HStack{
             Button(action: {
@@ -139,10 +149,11 @@ struct bottomView: View {
 }
 
 struct imageView: View {
-    @EnvironmentObject var manager : RestaurantManager
+    @ObservedObject var manager : RestaurantManager
     var currentRestaurant : Resto
-    init(manager restaurantManager : Resto) {
-        currentRestaurant = restaurantManager
+    init(manager restaurantManager : RestaurantManager, currentRest : Resto) {
+        manager = restaurantManager
+        currentRestaurant = currentRest
     }
     var body: some View {
         let imageString = currentRestaurant.restaurant.thumb
@@ -177,10 +188,11 @@ struct imageView: View {
 }
 
 struct labelView: View {
-    @EnvironmentObject var manager : RestaurantManager
+    @ObservedObject var manager : RestaurantManager
     var currentRestaurant : Resto
-    init(manager restaurantManager : Resto) {
-        currentRestaurant = restaurantManager
+    init(manager restaurantManager : RestaurantManager, currentRest : Resto) {
+        manager = restaurantManager
+        currentRestaurant = currentRest
     }
     var body: some View {
         VStack {

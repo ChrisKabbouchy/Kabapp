@@ -9,17 +9,19 @@
 import Foundation
 import SwiftUI
 
-struct Resto : Identifiable{
+struct Resto : Identifiable {
+    
     var id : Int
     var restaurant : RestaurantDetails
-    var degree : Double = 0
-    var swipe : CGFloat = 0
-    var offset : CGSize = .zero
+    var degree : Double
+    var swipe : CGFloat
+    var offset : CGSize
     
     init() {
         id = 0
         degree = 0
         swipe = 0
+        offset = .zero
         restaurant = RestaurantDetails(id: "", name: "", url: "", thumb: "")
     }
 }

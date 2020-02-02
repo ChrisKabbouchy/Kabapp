@@ -14,18 +14,15 @@ class RestaurantManager: ObservableObject {
     
     
     @Published var imageData : UIImage?
-    @Published var restaurants = [Resto()]
+    @Published var restaurants = [Resto]()
 
-//    @Published var degree : Double = 0
-//    @Published var swipe : CGFloat = 0
-
-//    func updateUI(id : Int , offsetValue : CGSize)  {
-//        for i in 0..<restaurants.count {
-//            if restaurants[i].id == id{
-//                restaurants[i].offset = offsetValue
-//            }
-//        }
-//    }
+    func updateUI(id : Int , offsetValue : CGSize)  {
+        for i in 0..<restaurants.count {
+            if restaurants[i].id == id{
+                restaurants[i].offset = offsetValue
+            }
+        }
+    }
     func fetchData() {
         
         let baseUrl = "https://developers.zomato.com/api/v2.1/geocode?lat=33.8333&lon=35.8333"
@@ -61,14 +58,8 @@ class RestaurantManager: ObservableObject {
                                 var newRest = Resto()
                                 newRest.restaurant = decodedData.nearby_restaurants[i].restaurant
                                 newRest.id = i
-                                if i == 0 {
-                                    self.restaurants[i] = newRest
-                                }else{
-                                    self.restaurants.append(newRest)
-                                }
-                                //self.restaurants[i].restaurant = decodedData.nearby_restaurants[i].restaurant
+                                self.restaurants.append(newRest)
                             }
-                            //self.endRestaurant.restDaata = decodedData.nearby_restaurants
                         }
                         
                     }
