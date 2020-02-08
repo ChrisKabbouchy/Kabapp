@@ -14,18 +14,37 @@ struct ContentView: View {
     init() {
         restaurantManager.fetchData()
     }
-    @State private var offset: CGSize = .zero
     @State private var currentRest : Int = 8
     var body: some View {
         //currentRest = restaurantManager.restaurants.last?.id ?? 6
      return VStack{
             topView(manager: restaurantManager)
             Spacer()
-            GeometryReader{ geo in
+            swipeView(restaurantManager: restaurantManager)
+            Spacer()
+            bottomView()
+            
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+
+struct swipeView : View {
+    @ObservedObject var restaurantManager : RestaurantManager
+    @State private var offset: CGSize = .zero
+    var body: some View {
+        
+        GeometryReader{ geo in
                     ZStack{
                         ForEach(self.restaurantManager.restaurants){ restaurant in
                             
-                            if (self.restaurantManager.restaurants.count-1 )...self.restaurantManager.restaurants.count ~= restaurant.id {
+                            if (self.restaurantManager.restaurants.count-2 )...self.restaurantManager.restaurants.count ~= restaurant.id {
                             ZStack(alignment: .bottomLeading){
                                 imageView(manager: self.restaurantManager, currentRest: restaurant)
                                 labelView(manager: self.restaurantManager, currentRest: restaurant)
@@ -39,36 +58,31 @@ struct ContentView: View {
                             })
                                 .onEnded { value in
                                     if value.translation.width < -100 {
-                                        self.offset = .init(width: -1000, height: 0)
-                                        //self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
-                                        self.restaurantManager.restaurants.remove(at: restaurant.id)
+                                        //self.offset = .init(width: -1000, height: 0)
+                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
+                                        //self.restaurantManager.restaurants.remove(at: restaurant.id)
                                        // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
                                     } else if value.translation.width > 100 {
-                                        self.offset = .init(width: 1000, height: 0)
-                                        //self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
-                                        self.restaurantManager.restaurants.remove(at: restaurant.id)
+                                        //self.offset = .init(width: 1000, height: 0)
+                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
+                                        //self.restaurantManager.restaurants.remove(at: restaurant.id)
                                        // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
                                     } else {
                                         //self.offset = .zero
                                         self.restaurantManager.restaurants[restaurant.id].offset = .zero
                                         //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .zero)
                                     }
+                                    Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
+                                        self.restaurantManager.restaurants.remove(at: restaurant.id)
+                                    }
+                                    
                             })
                             .animation(.spring())
                             }}
             }
         }
-            Spacer()
-            bottomView()
-            
-        }
     }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+        
 }
 
 struct topView: View {
