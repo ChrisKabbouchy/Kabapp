@@ -7,20 +7,25 @@
 //
 import Foundation
 import SwiftUI
+import CoreLocation
 import Combine
 
+var firstLoad : Bool = true
+
 struct ContentView: View {
-    @ObservedObject var restaurantManager = RestaurantManager()
-    init() {
-        restaurantManager.fetchData()
-    }
+    
+    @EnvironmentObject var restaurantManager : RestaurantManager
+    @EnvironmentObject var locationManager : LocationManager
     @State private var currentRest : Int = 8
     var body: some View {
-        //currentRest = restaurantManager.restaurants.last?.id ?? 6
-     return VStack{
-            topView(manager: restaurantManager)
+        if locationManager.location != nil && firstLoad {
+            restaurantManager.fetchData(location: locationManager.location)
+            firstLoad = false
+        }
+        return VStack{
+            topView()
             Spacer()
-            swipeView(restaurantManager: restaurantManager)
+            swipeView()
             Spacer()
             bottomView()
             
@@ -36,57 +41,62 @@ struct ContentView_Previews: PreviewProvider {
 
 
 struct swipeView : View {
-    @ObservedObject var restaurantManager : RestaurantManager
+    @EnvironmentObject var restaurantManager : RestaurantManager
     @State private var offset: CGSize = .zero
     var body: some View {
         
         GeometryReader{ geo in
-                    ZStack{
-                        ForEach(self.restaurantManager.restaurants){ restaurant in
-                            
-                            if (self.restaurantManager.restaurants.count-2 )...self.restaurantManager.restaurants.count ~= restaurant.id {
-                            ZStack(alignment: .bottomLeading){
-                                imageView(manager: self.restaurantManager, currentRest: restaurant)
-                                labelView(manager: self.restaurantManager, currentRest: restaurant)
-                            }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
-                                //.rotationEffect(.degrees(Double(offset.width/geo.size.width)*25),anchor: .bottom)
+            ZStack{
+                ForEach(self.restaurantManager.restaurants){ restaurant in
+                    
+                    if (self.restaurantManager.restaurants.count-2 )...self.restaurantManager.restaurants.count ~= restaurant.id {
+                        ZStack(alignment: .bottomLeading){
+                            imageView(currentRest: restaurant).environmentObject(self.restaurantManager)
+                            labelView(currentRest: restaurant).environmentObject(self.restaurantManager)
+                        }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
+                            //.rotationEffect(.degrees(Double(offset.width/geo.size.width)*25),anchor: .bottom)
                             .gesture(DragGesture()
                                 .onChanged ({value in
                                     self.offset = value.translation
                                     //self.restaurantManager.restaurants[restaurant.id].offset = value.translation
                                     
-                            })
+                                })
                                 .onEnded { value in
                                     if value.translation.width < -100 {
                                         //self.offset = .init(width: -1000, height: 0)
                                         self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
                                         //self.restaurantManager.restaurants.remove(at: restaurant.id)
-                                       // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
+                                        // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
+                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
+                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
+                                        }
+                                        
                                     } else if value.translation.width > 100 {
                                         //self.offset = .init(width: 1000, height: 0)
                                         self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
                                         //self.restaurantManager.restaurants.remove(at: restaurant.id)
-                                       // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
+                                        // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
+                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
+                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
+                                        }
+                                        
                                     } else {
                                         //self.offset = .zero
                                         self.restaurantManager.restaurants[restaurant.id].offset = .zero
                                         //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .zero)
                                     }
-                                    Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
-                                        self.restaurantManager.restaurants.remove(at: restaurant.id)
-                                    }
-                                    
                             })
                             .animation(.spring())
-                            }}
+                    }}
             }
         }
     }
-        
+    
 }
 
 struct topView: View {
-    @ObservedObject var manager : RestaurantManager
+    @EnvironmentObject var manager : RestaurantManager
+    @EnvironmentObject var locationManager : LocationManager
     var body: some View {
         HStack{
             Button(action: {
@@ -100,7 +110,7 @@ struct topView: View {
                     .aspectRatio(contentMode: .fit)
             }
             Spacer()
-            Button(action: {self.manager.fetchData()}) {
+            Button(action: {self.manager.fetchData(location: self.locationManager.location)}) {
                 Image(systemName: "flame.fill")
                     .resizable()
                     .frame(width: 50, height: 50)
@@ -163,10 +173,9 @@ struct bottomView: View {
 }
 
 struct imageView: View {
-    @ObservedObject var manager : RestaurantManager
+    @EnvironmentObject var manager : RestaurantManager
     var currentRestaurant : Resto
-    init(manager restaurantManager : RestaurantManager, currentRest : Resto) {
-        manager = restaurantManager
+    init(currentRest : Resto) {
         currentRestaurant = currentRest
     }
     var body: some View {
@@ -202,10 +211,9 @@ struct imageView: View {
 }
 
 struct labelView: View {
-    @ObservedObject var manager : RestaurantManager
+    @EnvironmentObject var manager : RestaurantManager
     var currentRestaurant : Resto
-    init(manager restaurantManager : RestaurantManager, currentRest : Resto) {
-        manager = restaurantManager
+    init(currentRest : Resto) {
         currentRestaurant = currentRest
     }
     var body: some View {

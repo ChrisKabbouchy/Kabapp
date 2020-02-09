@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import CoreLocation
 import SwiftUI
 
 
 class RestaurantManager: ObservableObject {
     
     
-    @Published var imageData : UIImage?
+    @EnvironmentObject var locationManager : LocationManager
     @Published var restaurants = [Resto]()
-
+    
     func updateUI(id : Int , offsetValue : CGSize)  {
         for i in 0..<restaurants.count {
             if restaurants[i].id == id{
@@ -23,9 +24,18 @@ class RestaurantManager: ObservableObject {
             }
         }
     }
-    func fetchData() {
+    func fetchData(location : CLLocation?)  {
+        let baseUrl = "https://developers.zomato.com/api/v2.1/geocode?"
+        if let safeLocation = location{
+            let finalUrl = "\(baseUrl)lat=\(safeLocation.coordinate.latitude)&lon=\(safeLocation.coordinate.longitude)"
+            fetchData(url: finalUrl)
+        }
+        print("i am here")
+    }
+    func fetchData(url : String) {
         
-        let baseUrl = "https://developers.zomato.com/api/v2.1/geocode?lat=33.8333&lon=35.8333"
+        //let baseUrl = "https://developers.zomato.com/api/v2.1/geocode?lat=33.8333&lon=35.8333"
+        let baseUrl = url
         let apiKey = "79010e4bdff8688f68fbeb86ee8c6345"
         
         
@@ -47,13 +57,7 @@ class RestaurantManager: ObservableObject {
                 do{
                     let decodedData = try decoder.decode(RestaurantData.self, from: safeData)
                     print(decodedData.nearby_restaurants[4].restaurant.name)
-                    let imageString = decodedData.nearby_restaurants[4].restaurant.thumb
-                    let imageUrl = URL(string: imageString)
-                    let imageDataa = try? Data(contentsOf: imageUrl!)
-                    if let safeImageData = imageDataa {
-                        //self.delegate?.restaurantDidUpdate(imageData : safeImageData)
                         DispatchQueue.main.async {
-                            self.imageData = UIImage(data: safeImageData)
                             for i in 0..<decodedData.nearby_restaurants.count{
                                 var newRest = Resto()
                                 newRest.restaurant = decodedData.nearby_restaurants[i].restaurant
@@ -62,7 +66,6 @@ class RestaurantManager: ObservableObject {
                             }
                         }
                         
-                    }
                 }catch{
                     print(error)
                 }

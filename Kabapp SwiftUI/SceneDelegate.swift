@@ -22,14 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
        
         
-       // let restaurantManager = RestaurantManager()
+        let restaurantManager = RestaurantManager()
+        let locationManager = LocationManager()
+        //restaurantManager.fetchData2()
         let contentView = ContentView()
-       // restaurantManager.fetchData()
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
+            window.rootViewController = UIHostingController(rootView: contentView.environmentObject(restaurantManager).environmentObject(locationManager))
             self.window = window
             window.makeKeyAndVisible()
         }
