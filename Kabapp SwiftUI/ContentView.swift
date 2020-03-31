@@ -49,16 +49,17 @@ struct swipeView : View {
             ZStack{
                 ForEach(self.restaurantManager.restaurants){ restaurant in
                     
-                    if (self.restaurantManager.restaurants.count-2 )...self.restaurantManager.restaurants.count ~= restaurant.id {
+//                    if (self.restaurantManager.restaurants.count-2 )...self.restaurantManager.restaurants.count ~= restaurant.id {
                         ZStack(alignment: .bottomLeading){
-                            imageView(currentRest: restaurant).environmentObject(self.restaurantManager)
+                            //imageView(currentRest: restaurant).environmentObject(self.restaurantManager)
+                            imageView2(withURL: restaurant.restaurant.thumb, currentRest: self.restaurantManager.restaurants[restaurant.id])
                             labelView(currentRest: restaurant).environmentObject(self.restaurantManager)
                         }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
                             //.rotationEffect(.degrees(Double(offset.width/geo.size.width)*25),anchor: .bottom)
                             .gesture(DragGesture()
                                 .onChanged ({value in
-                                    self.offset = value.translation
-                                    //self.restaurantManager.restaurants[restaurant.id].offset = value.translation
+                                    //self.offset = value.translation
+                                    self.restaurantManager.restaurants[restaurant.id].offset = value.translation
                                     
                                 })
                                 .onEnded { value in
@@ -67,18 +68,18 @@ struct swipeView : View {
                                         self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
                                         //self.restaurantManager.restaurants.remove(at: restaurant.id)
                                         // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
-                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
-                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
-                                        }
+//                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
+//                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
+//                                        }
                                         
                                     } else if value.translation.width > 100 {
                                         //self.offset = .init(width: 1000, height: 0)
                                         self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
                                         //self.restaurantManager.restaurants.remove(at: restaurant.id)
                                         // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
-                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
-                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
-                                        }
+//                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
+//                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
+//                                        }
                                         
                                     } else {
                                         //self.offset = .zero
@@ -88,7 +89,7 @@ struct swipeView : View {
                             })
                             .animation(.spring())
                     }}
-            }
+            
         }
     }
     
@@ -174,8 +175,8 @@ struct bottomView: View {
 
 struct imageView: View {
     @EnvironmentObject var manager : RestaurantManager
-    var currentRestaurant : Resto
-    init(currentRest : Resto) {
+    var currentRestaurant : RestaurantModel
+    init(currentRest : RestaurantModel) {
         currentRestaurant = currentRest
     }
     var body: some View {
@@ -209,11 +210,35 @@ struct imageView: View {
         }
     }
 }
+struct imageView2: View {
+    
+    @ObservedObject var imageLoader : ImageLoader
+    var currentRestaurant : RestaurantModel
+    
+    init(withURL url:String, currentRest : RestaurantModel) {
+        imageLoader = ImageLoader(urlString:url)
+        currentRestaurant = currentRest
+    }
+    
+    var body: some View{
+        
+//        if imageLoader.dataIsValid == true && currentRestaurant.image == nil{
+//             currentRestaurant.image = UIImage(data: imageLoader.data!)!
+//        }
+//
+        return Image(uiImage: (imageLoader.dataIsValid ? UIImage(data: imageLoader.data!)! : UIImage(systemName: "photo.fill"))!)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 320, height: 450, alignment: .center)
+            //.padding(.all)
+            .edgesIgnoringSafeArea(.all)
+    }
+}
 
 struct labelView: View {
     @EnvironmentObject var manager : RestaurantManager
-    var currentRestaurant : Resto
-    init(currentRest : Resto) {
+    var currentRestaurant : RestaurantModel
+    init(currentRest : RestaurantModel) {
         currentRestaurant = currentRest
     }
     var body: some View {

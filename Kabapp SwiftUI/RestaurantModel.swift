@@ -9,13 +9,15 @@
 import Foundation
 import SwiftUI
 
-struct Resto : Identifiable {
+struct RestaurantModel : Identifiable {
     
     var id : Int
     var restaurant : RestaurantDetails
+    var image : UIImage?
     var degree : Double
     var swipe : CGFloat
     var offset : CGSize
+    
     
     init() {
         id = 0

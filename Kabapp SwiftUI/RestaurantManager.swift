@@ -15,7 +15,7 @@ class RestaurantManager: ObservableObject {
     
     
     @EnvironmentObject var locationManager : LocationManager
-    @Published var restaurants = [Resto]()
+    @Published var restaurants = [RestaurantModel]()
     
     func updateUI(id : Int , offsetValue : CGSize)  {
         for i in 0..<restaurants.count {
@@ -59,7 +59,7 @@ class RestaurantManager: ObservableObject {
                     print(decodedData.nearby_restaurants[4].restaurant.name)
                         DispatchQueue.main.async {
                             for i in 0..<decodedData.nearby_restaurants.count{
-                                var newRest = Resto()
+                                var newRest = RestaurantModel()
                                 newRest.restaurant = decodedData.nearby_restaurants[i].restaurant
                                 newRest.id = i
                                 self.restaurants.append(newRest)
