@@ -42,53 +42,30 @@ struct ContentView_Previews: PreviewProvider {
 
 struct swipeView : View {
     @EnvironmentObject var restaurantManager : RestaurantManager
-    @State private var offset: CGSize = .zero
     var body: some View {
         
         GeometryReader{ geo in
             ZStack{
                 ForEach(self.restaurantManager.restaurants){ restaurant in
-                    
-//                    if (self.restaurantManager.restaurants.count-2 )...self.restaurantManager.restaurants.count ~= restaurant.id {
-                        ZStack(alignment: .bottomLeading){
-                            //imageView(currentRest: restaurant).environmentObject(self.restaurantManager)
-                            imageView2(withURL: restaurant.restaurant.thumb, currentRest: self.restaurantManager.restaurants[restaurant.id])
-                            labelView(currentRest: restaurant).environmentObject(self.restaurantManager)
-                        }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
-                            //.rotationEffect(.degrees(Double(offset.width/geo.size.width)*25),anchor: .bottom)
-                            .gesture(DragGesture()
-                                .onChanged ({value in
-                                    //self.offset = value.translation
-                                    self.restaurantManager.restaurants[restaurant.id].offset = value.translation
-                                    
-                                })
-                                .onEnded { value in
-                                    if value.translation.width < -100 {
-                                        //self.offset = .init(width: -1000, height: 0)
-                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
-                                        //self.restaurantManager.restaurants.remove(at: restaurant.id)
-                                        // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: -1000, height: 0))
-//                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
-//                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
-//                                        }
-                                        
-                                    } else if value.translation.width > 100 {
-                                        //self.offset = .init(width: 1000, height: 0)
-                                        self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
-                                        //self.restaurantManager.restaurants.remove(at: restaurant.id)
-                                        // self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .init(width: 1000, height: 0))
-//                                        Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { (Timer) in
-//                                            self.restaurantManager.restaurants.remove(at: restaurant.id)
-//                                        }
-                                        
-                                    } else {
-                                        //self.offset = .zero
-                                        self.restaurantManager.restaurants[restaurant.id].offset = .zero
-                                        //self.restaurantManager.updateUI(id: restaurant.id, offsetValue: .zero)
-                                    }
+                    ZStack(alignment: .bottomLeading){
+                        imageView(withURL: restaurant.restaurant.thumb)
+                        labelView(currentRest: restaurant).environmentObject(self.restaurantManager)
+                    }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
+                        .gesture(DragGesture()
+                            .onChanged ({value in
+                                self.restaurantManager.restaurants[restaurant.id].offset = value.translation
                             })
-                            .animation(.spring())
-                    }}
+                            .onEnded { value in
+                                if value.translation.width < -100 {
+                                    self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
+                                } else if value.translation.width > 100 {
+                                    self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
+                                } else {
+                                    self.restaurantManager.restaurants[restaurant.id].offset = .zero
+                                }
+                        })
+                        .animation(.spring())
+                }}
             
         }
     }
@@ -174,66 +151,50 @@ struct bottomView: View {
 }
 
 struct imageView: View {
-    @EnvironmentObject var manager : RestaurantManager
-    var currentRestaurant : RestaurantModel
-    init(currentRest : RestaurantModel) {
-        currentRestaurant = currentRest
-    }
-    var body: some View {
-        let imageString = currentRestaurant.restaurant.thumb
-        if let imageUrl = URL(string: imageString){
-            let imageDataa = try? Data(contentsOf: imageUrl)
-            if let safeImageData = imageDataa {
-                let imageData = UIImage(data: safeImageData)
-                return Image(uiImage: imageData!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 320, height: 450, alignment: .center)
-                    //.padding(.all)
-                    .edgesIgnoringSafeArea(.all)
-            }else{
-                return Image("image")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 320, height: 450, alignment: .center)
-                    //.padding(.all)
-                    .edgesIgnoringSafeArea(.all)
-            }
-            
-        }else{
-            return Image("image")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 320, height: 450, alignment: .center)
-                //.padding(.all)
-                .edgesIgnoringSafeArea(.all)
-        }
-    }
-}
-struct imageView2: View {
     
     @ObservedObject var imageLoader : ImageLoader
-    var currentRestaurant : RestaurantModel
+    @State var currentImage : UIImage?
+    var imageUrl : String
     
-    init(withURL url:String, currentRest : RestaurantModel) {
-        imageLoader = ImageLoader(urlString:url)
-        currentRestaurant = currentRest
+    init(withURL url:String) {
+        imageLoader = ImageLoader()
+        imageUrl = url
     }
     
     var body: some View{
         
-//        if imageLoader.dataIsValid == true && currentRestaurant.image == nil{
-//             currentRestaurant.image = UIImage(data: imageLoader.data!)!
-//        }
-//
-        return Image(uiImage: (imageLoader.dataIsValid ? UIImage(data: imageLoader.data!)! : UIImage(systemName: "photo.fill"))!)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: 320, height: 450, alignment: .center)
-            //.padding(.all)
-            .edgesIgnoringSafeArea(.all)
+        if currentImage == nil{
+            imageLoader.loadImage(urlString: imageUrl)
+        }
+        
+        if imageLoader.dataIsValid && currentImage == nil{
+            DispatchQueue.main.async {
+                self.currentImage = UIImage(data: self.imageLoader.data!)
+            }
+            return Image(uiImage: UIImage(data: self.imageLoader.data!)!)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 320, height: 450, alignment: .center)
+                .edgesIgnoringSafeArea(.all)
+        }
+        else if currentImage != nil {
+            return Image(uiImage: currentImage!)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 320, height: 450, alignment: .center)
+                .edgesIgnoringSafeArea(.all)
+        }
+        else{
+            return Image(uiImage : UIImage(systemName: "photo.fill")!)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 320, height: 450, alignment: .center)
+                .edgesIgnoringSafeArea(.all)
+        }
+        
     }
 }
+
 
 struct labelView: View {
     @EnvironmentObject var manager : RestaurantManager
