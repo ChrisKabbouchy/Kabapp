@@ -11,31 +11,32 @@ import SwiftUI
 struct swipeView : View {
     @EnvironmentObject var restaurantManager : RestaurantManager
     var body: some View {
-        
-        GeometryReader{ geo in
-            ZStack{
-                ForEach(self.restaurantManager.restaurants){ restaurant in
-                    ZStack(alignment: .bottomLeading){
-                        imageView(withURL: restaurant.restaurant.thumb)
-                        labelView(currentRest: restaurant).environmentObject(self.restaurantManager)
-                    }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
-                        .gesture(DragGesture()
-                            .onChanged ({value in
-                                self.restaurantManager.restaurants[restaurant.id].offset = value.translation
-                            })
-                            .onEnded { value in
-                                if value.translation.width < -100 {
-                                    self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
-                                } else if value.translation.width > 100 {
-                                    self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
-                                } else {
-                                    self.restaurantManager.restaurants[restaurant.id].offset = .zero
-                                }
+        ZStack{
+            ForEach(self.restaurantManager.restaurants){ restaurant in
+                ZStack(alignment: .bottomLeading){
+                    imageView(withURL: restaurant.restaurant.thumb)
+                    labelView(currentRest: restaurant).environmentObject(self.restaurantManager)
+                }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
+                    .gesture(DragGesture()
+                        .onChanged ({value in
+                            self.restaurantManager.restaurants[restaurant.id].offset = value.translation
                         })
-                        .animation(.spring())
-                }}
-            
-        }
+                        .onEnded { value in
+                            if value.translation.width < -100 {// is disliked
+                                self.restaurantManager.restaurants[restaurant.id].offset = .init(width: -1000, height: 0)
+                                self.restaurantManager.restaurants[restaurant.id].isLiked = false
+                                self.restaurantManager.currentRest -= 1
+                            } else if value.translation.width > 100 {// is liked
+                                self.restaurantManager.restaurants[restaurant.id].offset = .init(width: 1000, height: 0)
+                                self.restaurantManager.restaurants[restaurant.id].isLiked = true
+                                self.restaurantManager.currentRest -= 1
+                            } else {// failed to decide
+                                self.restaurantManager.restaurants[restaurant.id].offset = .zero
+                            }
+                    })
+                    .animation(.spring())
+            }}
+        
     }
     
 }

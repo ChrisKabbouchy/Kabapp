@@ -16,6 +16,8 @@ class RestaurantManager: ObservableObject {
     
     @EnvironmentObject var locationManager : LocationManager
     @Published var restaurants = [RestaurantModel]()
+    @Published var currentRest = -1
+    @Published var maxRestNumber = -1
     
     func updateUI(id : Int , offsetValue : CGSize)  {
         for i in 0..<restaurants.count {
@@ -33,7 +35,9 @@ class RestaurantManager: ObservableObject {
         print("i am here")
     }
     func fetchData(url : String) {
-        
+        if !restaurants.isEmpty{
+            restaurants.removeAll()
+        }
         //let baseUrl = "https://developers.zomato.com/api/v2.1/geocode?lat=33.8333&lon=35.8333"
         let baseUrl = url
         let apiKey = "79010e4bdff8688f68fbeb86ee8c6345"
@@ -63,6 +67,8 @@ class RestaurantManager: ObservableObject {
                                 newRest.restaurant = decodedData.nearby_restaurants[i].restaurant
                                 newRest.id = i
                                 self.restaurants.append(newRest)
+                                self.currentRest = decodedData.nearby_restaurants.count
+                                self.maxRestNumber = decodedData.nearby_restaurants.count
                             }
                         }
                         

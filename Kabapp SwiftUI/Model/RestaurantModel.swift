@@ -17,6 +17,7 @@ struct RestaurantModel : Identifiable {
     var degree : Double
     var swipe : CGFloat
     var offset : CGSize
+    var isLiked : Bool
     
     
     init() {
@@ -24,6 +25,7 @@ struct RestaurantModel : Identifiable {
         degree = 0
         swipe = 0
         offset = .zero
+        isLiked = false
         restaurant = RestaurantDetails(id: "", name: "", url: "", thumb: "")
     }
 }

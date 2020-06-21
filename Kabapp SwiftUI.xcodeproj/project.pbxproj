@@ -15,6 +15,7 @@
 		4E802E7C249F5D3400427035 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E7B249F5D3400427035 /* BottomView.swift */; };
 		4E802E7E249F5DF600427035 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E7D249F5DF600427035 /* ImageView.swift */; };
 		4E802E80249F5EC800427035 /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E7F249F5EC800427035 /* LabelView.swift */; };
+		4E802E82249F754500427035 /* LikedRestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E81249F754500427035 /* LikedRestaurantView.swift */; };
 		4E98017023C2652200C831AF /* RestaurantManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E98016F23C2652200C831AF /* RestaurantManager.swift */; };
 		4EA10CDA23EF425D007900DE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA10CD923EF425D007900DE /* LocationManager.swift */; };
 		4EF19DE423B90460008AF8FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF19DE323B90460008AF8FE /* AppDelegate.swift */; };
@@ -34,6 +35,7 @@
 		4E802E7B249F5D3400427035 /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
 		4E802E7D249F5DF600427035 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		4E802E7F249F5EC800427035 /* LabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
+		4E802E81249F754500427035 /* LikedRestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedRestaurantView.swift; sourceTree = "<group>"; };
 		4E98016F23C2652200C831AF /* RestaurantManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantManager.swift; sourceTree = "<group>"; };
 		4EA10CD923EF425D007900DE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		4EF19DE023B90460008AF8FE /* Kabapp SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kabapp SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +77,7 @@
 				4E802E7D249F5DF600427035 /* ImageView.swift */,
 				4E802E7F249F5EC800427035 /* LabelView.swift */,
 				4E802E7B249F5D3400427035 /* BottomView.swift */,
+				4E802E81249F754500427035 /* LikedRestaurantView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				4E802E77249F5C5600427035 /* SwipeView.swift in Sources */,
 				4E3A394E23D8F8A100890CFC /* RestaurantModel.swift in Sources */,
 				4EF19DE823B90460008AF8FE /* ContentView.swift in Sources */,
+				4E802E82249F754500427035 /* LikedRestaurantView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,29 +9,32 @@
 import SwiftUI
 
 struct topView: View {
-    @EnvironmentObject var manager : RestaurantManager
+    @EnvironmentObject var restaurantManager : RestaurantManager
     @EnvironmentObject var locationManager : LocationManager
+    @State var isPressed =  false
     var body: some View {
         HStack{
             Button(action: {
-                print("hello")
-                
+                self.isPressed.toggle()
             }) {
                 Image(systemName: "square.and.pencil")
                     .resizable()
                     .frame(width: 45, height: 45)
                     .foregroundColor(.gray)
                     .aspectRatio(contentMode: .fit)
+            }.sheet(isPresented: $isPressed){
+                LikedRestaurantView().environmentObject(self.restaurantManager)
             }
             Spacer()
-            Button(action: {self.manager.fetchData(location: self.locationManager.location)}) {
+            Button(action: {
+                self.restaurantManager.fetchData(location: self.locationManager.location)
+            }) {
                 Image(systemName: "flame.fill")
                     .resizable()
                     .frame(width: 50, height: 50)
                     .foregroundColor(.red)
                     .aspectRatio(contentMode: .fit)
             }
-            
             Spacer()
             Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
                 Image(systemName: "message.fill")
