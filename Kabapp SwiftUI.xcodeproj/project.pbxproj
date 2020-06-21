@@ -10,6 +10,11 @@
 		4E30E56623C24E2B006C5C12 /* RestaurantData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E30E56523C24E2B006C5C12 /* RestaurantData.swift */; };
 		4E3A394E23D8F8A100890CFC /* RestaurantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3A394D23D8F8A100890CFC /* RestaurantModel.swift */; };
 		4E55BC5A24339EE90062FF40 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55BC5924339EE90062FF40 /* ImageLoader.swift */; };
+		4E802E77249F5C5600427035 /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E76249F5C5600427035 /* SwipeView.swift */; };
+		4E802E7A249F5CD600427035 /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E79249F5CD600427035 /* TopView.swift */; };
+		4E802E7C249F5D3400427035 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E7B249F5D3400427035 /* BottomView.swift */; };
+		4E802E7E249F5DF600427035 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E7D249F5DF600427035 /* ImageView.swift */; };
+		4E802E80249F5EC800427035 /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E802E7F249F5EC800427035 /* LabelView.swift */; };
 		4E98017023C2652200C831AF /* RestaurantManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E98016F23C2652200C831AF /* RestaurantManager.swift */; };
 		4EA10CDA23EF425D007900DE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA10CD923EF425D007900DE /* LocationManager.swift */; };
 		4EF19DE423B90460008AF8FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF19DE323B90460008AF8FE /* AppDelegate.swift */; };
@@ -24,6 +29,11 @@
 		4E30E56523C24E2B006C5C12 /* RestaurantData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantData.swift; sourceTree = "<group>"; };
 		4E3A394D23D8F8A100890CFC /* RestaurantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantModel.swift; sourceTree = "<group>"; };
 		4E55BC5924339EE90062FF40 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		4E802E76249F5C5600427035 /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
+		4E802E79249F5CD600427035 /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
+		4E802E7B249F5D3400427035 /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
+		4E802E7D249F5DF600427035 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		4E802E7F249F5EC800427035 /* LabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
 		4E98016F23C2652200C831AF /* RestaurantManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantManager.swift; sourceTree = "<group>"; };
 		4EA10CD923EF425D007900DE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		4EF19DE023B90460008AF8FE /* Kabapp SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kabapp SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +57,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E802E71249F5B2700427035 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4E30E56523C24E2B006C5C12 /* RestaurantData.swift */,
+				4E3A394D23D8F8A100890CFC /* RestaurantModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4E802E72249F5B3500427035 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4EF19DE723B90460008AF8FE /* ContentView.swift */,
+				4E802E79249F5CD600427035 /* TopView.swift */,
+				4E802E76249F5C5600427035 /* SwipeView.swift */,
+				4E802E7D249F5DF600427035 /* ImageView.swift */,
+				4E802E7F249F5EC800427035 /* LabelView.swift */,
+				4E802E7B249F5D3400427035 /* BottomView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4E802E73249F5B3E00427035 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4E98016F23C2652200C831AF /* RestaurantManager.swift */,
+				4E55BC5924339EE90062FF40 /* ImageLoader.swift */,
+				4EA10CD923EF425D007900DE /* LocationManager.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		4EF19DD723B90460008AF8FE = {
 			isa = PBXGroup;
 			children = (
@@ -68,12 +110,9 @@
 			children = (
 				4EF19DE323B90460008AF8FE /* AppDelegate.swift */,
 				4EF19DE523B90460008AF8FE /* SceneDelegate.swift */,
-				4E55BC5924339EE90062FF40 /* ImageLoader.swift */,
-				4EF19DE723B90460008AF8FE /* ContentView.swift */,
-				4E30E56523C24E2B006C5C12 /* RestaurantData.swift */,
-				4E3A394D23D8F8A100890CFC /* RestaurantModel.swift */,
-				4EA10CD923EF425D007900DE /* LocationManager.swift */,
-				4E98016F23C2652200C831AF /* RestaurantManager.swift */,
+				4E802E73249F5B3E00427035 /* ViewModel */,
+				4E802E72249F5B3500427035 /* View */,
+				4E802E71249F5B2700427035 /* Model */,
 				4EF19DE923B90465008AF8FE /* Assets.xcassets */,
 				4EF19DEE23B90465008AF8FE /* LaunchScreen.storyboard */,
 				4EF19DF123B90465008AF8FE /* Info.plist */,
@@ -161,12 +200,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E802E7E249F5DF600427035 /* ImageView.swift in Sources */,
 				4E55BC5A24339EE90062FF40 /* ImageLoader.swift in Sources */,
+				4E802E7C249F5D3400427035 /* BottomView.swift in Sources */,
 				4EF19DE423B90460008AF8FE /* AppDelegate.swift in Sources */,
+				4E802E80249F5EC800427035 /* LabelView.swift in Sources */,
 				4E98017023C2652200C831AF /* RestaurantManager.swift in Sources */,
 				4EF19DE623B90460008AF8FE /* SceneDelegate.swift in Sources */,
 				4EA10CDA23EF425D007900DE /* LocationManager.swift in Sources */,
 				4E30E56623C24E2B006C5C12 /* RestaurantData.swift in Sources */,
+				4E802E7A249F5CD600427035 /* TopView.swift in Sources */,
+				4E802E77249F5C5600427035 /* SwipeView.swift in Sources */,
 				4E3A394E23D8F8A100890CFC /* RestaurantModel.swift in Sources */,
 				4EF19DE823B90460008AF8FE /* ContentView.swift in Sources */,
 			);
