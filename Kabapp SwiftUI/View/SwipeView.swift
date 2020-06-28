@@ -14,7 +14,7 @@ struct swipeView : View {
         ZStack{
             ForEach(self.restaurantManager.restaurants){ restaurant in
                 ZStack(alignment: .bottomLeading){
-                    imageView(withURL: restaurant.restaurant.thumb)
+                    imageView(withURL: restaurant.restaurant.thumb, currentRest: self.restaurantManager.restaurants[restaurant.id])
                     labelView(currentRest: restaurant).environmentObject(self.restaurantManager)
                 }.offset(x: restaurant.offset.width, y: restaurant.offset.height)
                     .gesture(DragGesture()

@@ -11,10 +11,30 @@ import SwiftUI
 struct LikedRestaurantView: View {
     @EnvironmentObject var restaurantManager : RestaurantManager
     var body: some View {
-        
-        ForEach(self.restaurantManager.restaurants){ restaurant in
-            if restaurant.isLiked {
-                Text(restaurant.restaurant.name)
+        VStack (alignment: .leading, spacing: 20){
+            NavigationView{
+                ScrollView{
+                    ForEach(self.restaurantManager.restaurants){ restaurant in
+                        if restaurant.isLiked {
+                            NavigationLink(destination: DetailsRestaurantView(restaurantID: restaurant.id)){
+                                    VStack(alignment:.leading){
+                                        Image(uiImage: restaurant.image!)
+                                            .resizable().frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.height / 4)
+                                        Text(restaurant.restaurant.name)
+                                            .foregroundColor(Color("Color"))
+                                            .font(.headline)
+                                            .fontWeight(.heavy)
+                                            .padding(.leading)
+                                            .frame(height: 50,alignment: .leading)
+                                    }.background(Color("reverseColor"))
+                                        .cornerRadius(20)
+                                        .padding(.vertical)
+                            }.buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                    
+                    Spacer()
+                }.navigationBarTitle("Liked Restaurants")
             }
         }
         

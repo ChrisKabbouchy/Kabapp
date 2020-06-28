@@ -11,12 +11,15 @@ import SwiftUI
 struct imageView: View {
     
     @ObservedObject var imageLoader : ImageLoader
+    @EnvironmentObject var restaurantManager : RestaurantManager
     @State var currentImage : UIImage?
     var imageUrl : String
+    var currentRest : RestaurantModel
     
-    init(withURL url:String) {
+    init(withURL url:String , currentRest:RestaurantModel ) {
         imageLoader = ImageLoader()
         imageUrl = url
+        self.currentRest = currentRest
     }
     
     var body: some View{
@@ -28,6 +31,7 @@ struct imageView: View {
         if imageLoader.dataIsValid && currentImage == nil{
             DispatchQueue.main.async {
                 self.currentImage = UIImage(data: self.imageLoader.data!)
+                self.restaurantManager.restaurants[self.currentRest.id].image = self.currentImage
             }
             return Image(uiImage: UIImage(data: self.imageLoader.data!)!)
                 .resizable()

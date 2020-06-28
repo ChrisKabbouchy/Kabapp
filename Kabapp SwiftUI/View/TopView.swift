@@ -17,7 +17,7 @@ struct topView: View {
             Button(action: {
                 self.isPressed.toggle()
             }) {
-                Image(systemName: "square.and.pencil")
+                Image(systemName: "suit.heart")
                     .resizable()
                     .frame(width: 45, height: 45)
                     .foregroundColor(.gray)
@@ -37,7 +37,7 @@ struct topView: View {
             }
             Spacer()
             Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
-                Image(systemName: "message.fill")
+                Image(systemName: "gear")
                     .resizable()
                     .frame(width: 45, height: 45)
                     .foregroundColor(.gray)
