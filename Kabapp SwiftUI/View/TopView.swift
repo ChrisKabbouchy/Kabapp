@@ -24,7 +24,7 @@ struct topView: View {
                     .aspectRatio(contentMode: .fit)
             }.sheet(isPresented: $isPressed){
                 LikedRestaurantView().environmentObject(self.restaurantManager)
-            }
+            }.navigationBarItems(leading: Text("hello"))
             Spacer()
             Button(action: {
                 self.restaurantManager.fetchData(location: self.locationManager.location)

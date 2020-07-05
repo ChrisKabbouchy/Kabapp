@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LikedRestaurantView: View {
     @EnvironmentObject var restaurantManager : RestaurantManager
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack (alignment: .leading, spacing: 20){
             NavigationView{
@@ -17,24 +18,28 @@ struct LikedRestaurantView: View {
                     ForEach(self.restaurantManager.restaurants){ restaurant in
                         if restaurant.isLiked {
                             NavigationLink(destination: DetailsRestaurantView(restaurantID: restaurant.id)){
-                                    VStack(alignment:.leading){
-                                        Image(uiImage: restaurant.image!)
-                                            .resizable().frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.height / 4)
-                                        Text(restaurant.restaurant.name)
-                                            .foregroundColor(Color("Color"))
-                                            .font(.headline)
-                                            .fontWeight(.heavy)
-                                            .padding(.leading)
-                                            .frame(height: 50,alignment: .leading)
-                                    }.background(Color("reverseColor"))
-                                        .cornerRadius(20)
-                                        .padding(.vertical)
+                                VStack(alignment:.leading){
+                                    Image(uiImage: restaurant.image!)
+                                        .resizable().frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.height / 4)
+                                    Text(restaurant.restaurant.name)
+                                        .foregroundColor(Color("Color"))
+                                        .font(.headline)
+                                        .fontWeight(.heavy)
+                                        .padding(.leading)
+                                        .frame(height: 50,alignment: .leading)
+                                }.background(Color("reverseColor"))
+                                    .cornerRadius(20)
+                                    .padding(.vertical)
                             }.buttonStyle(PlainButtonStyle())
                         }
                     }
                     
                     Spacer()
                 }.navigationBarTitle("Liked Restaurants")
+                    .edgesIgnoringSafeArea(.horizontal)
+                    .navigationBarItems(leading:  Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                        Text("Back")})
+
             }
         }
         

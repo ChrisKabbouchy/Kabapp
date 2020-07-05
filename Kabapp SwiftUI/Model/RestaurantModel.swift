@@ -26,7 +26,7 @@ struct RestaurantModel : Identifiable {
         swipe = 0
         offset = .zero
         isLiked = false
-        restaurant = RestaurantDetails(id: "", name: "", url: "", thumb: "")
+        restaurant = RestaurantDetails(id: "", name: "", url: "", thumb: "", location: location(address: "", city: ""), cuisines: "", average_cost_for_two: 0, currency: "", user_rating: userRating(aggregate_rating: ""), photos_url : "", menu_url: "")
     }
 }
 
