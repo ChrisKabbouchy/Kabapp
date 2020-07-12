@@ -40,7 +40,7 @@
 		4E98016F23C2652200C831AF /* RestaurantManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantManager.swift; sourceTree = "<group>"; };
 		4EA10CD923EF425D007900DE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		4EBA615824A8F52400E1CD0B /* DetailsRestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsRestaurantView.swift; sourceTree = "<group>"; };
-		4EF19DE023B90460008AF8FE /* Kabapp SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kabapp SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EF19DE023B90460008AF8FE /* Kabapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kabapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EF19DE323B90460008AF8FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EF19DE523B90460008AF8FE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4EF19DE723B90460008AF8FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 		4EF19DE123B90460008AF8FE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4EF19DE023B90460008AF8FE /* Kabapp SwiftUI.app */,
+				4EF19DE023B90460008AF8FE /* Kabapp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,9 +138,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4EF19DDF23B90460008AF8FE /* Kabapp SwiftUI */ = {
+		4EF19DDF23B90460008AF8FE /* Kabapp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4EF19DF423B90466008AF8FE /* Build configuration list for PBXNativeTarget "Kabapp SwiftUI" */;
+			buildConfigurationList = 4EF19DF423B90466008AF8FE /* Build configuration list for PBXNativeTarget "Kabapp" */;
 			buildPhases = (
 				4EF19DDC23B90460008AF8FE /* Sources */,
 				4EF19DDD23B90460008AF8FE /* Frameworks */,
@@ -150,9 +150,9 @@
 			);
 			dependencies = (
 			);
-			name = "Kabapp SwiftUI";
+			name = Kabapp;
 			productName = "Kabapp SwiftUI";
-			productReference = 4EF19DE023B90460008AF8FE /* Kabapp SwiftUI.app */;
+			productReference = 4EF19DE023B90460008AF8FE /* Kabapp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -170,7 +170,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4EF19DDB23B90460008AF8FE /* Build configuration list for PBXProject "Kabapp SwiftUI" */;
+			buildConfigurationList = 4EF19DDB23B90460008AF8FE /* Build configuration list for PBXProject "Kabapp" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -183,7 +183,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4EF19DDF23B90460008AF8FE /* Kabapp SwiftUI */,
+				4EF19DDF23B90460008AF8FE /* Kabapp */,
 			);
 		};
 /* End PBXProject section */
@@ -365,7 +365,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.christiankabbouchy.Kabapp-SwiftUI";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Kabapp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -384,7 +384,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.christiankabbouchy.Kabapp-SwiftUI";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Kabapp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -393,7 +393,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4EF19DDB23B90460008AF8FE /* Build configuration list for PBXProject "Kabapp SwiftUI" */ = {
+		4EF19DDB23B90460008AF8FE /* Build configuration list for PBXProject "Kabapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4EF19DF223B90465008AF8FE /* Debug */,
@@ -402,7 +402,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4EF19DF423B90466008AF8FE /* Build configuration list for PBXNativeTarget "Kabapp SwiftUI" */ = {
+		4EF19DF423B90466008AF8FE /* Build configuration list for PBXNativeTarget "Kabapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4EF19DF523B90466008AF8FE /* Debug */,
