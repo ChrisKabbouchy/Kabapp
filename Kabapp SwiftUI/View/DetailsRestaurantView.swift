@@ -16,7 +16,7 @@ struct DetailsRestaurantView: View {
         return VStack{
             ScrollView{
                 VStack(alignment: .leading, spacing: 10){
-                    Image(uiImage: restaurant.image!)
+                    Image(uiImage: restaurant.image ?? UIImage(systemName: "photo")!)
                         .resizable()
                         .edgesIgnoringSafeArea(.all)
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2.5)

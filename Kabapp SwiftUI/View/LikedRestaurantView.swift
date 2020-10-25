@@ -19,7 +19,7 @@ struct LikedRestaurantView: View {
                         if restaurant.isLiked {
                             NavigationLink(destination: DetailsRestaurantView(restaurantID: restaurant.id)){
                                 VStack(alignment:.leading){
-                                    Image(uiImage: restaurant.image!)
+                                    Image(uiImage: restaurant.image ?? UIImage(systemName: "photo")!)
                                         .resizable().frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.height / 4)
                                     Text(restaurant.restaurant.name)
                                         .foregroundColor(Color("Color"))
